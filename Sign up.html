@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign up</title>
+  <link rel="stylesheet" href="signUp.css">
+  <script src="Mainjs.js"> </script>
+  <style>
+    
+  </style>
+</head>
+<body>
+
+    
+  <!-- Text Animation -->
+  <div class="animated-text" id="animated-text">
+    Welcome to SafeCloud
+  </div>
+  
+
+  <div class="video-container">
+    <video autoplay muted loop id="background-video">
+      <source src="0_Clouds_Sky_1920x1080.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <div class="navbar">
+        
+    <div class="logo">
+        <a href="index.html"><img src="SafeCloud_Logo.jpg" alt="Logo"></a>
+    </div>
+
+    <div class="dots">
+        <button onclick="toggleBox()">&#8942;</button>
+        <div class="box2" id="box2">
+            <a href="#">Support &#8599;</a>
+        </div>
+    </div>
+</div>
+
+  <!-- Login Form -->
+  <div class="login-form" id="login-form">
+    <img height="500px" width="300px" src="night_city_with_blue_clouds_ne.jpeg">
+
+    <form action="connect.php" method="post">
+      <h1 style="color: black;">SafeCloud</h1>
+      <input type="text" placeholder="Email" name="Email" required>
+      <input type="text" placeholder="Username" name="Username" required>
+      <input type="text" placeholder="Phone number" name="number" required>
+      <input type="password" placeholder="Password" name="Password" required>
+      <input type="submit" value="Sign up">
+      <i>Have Account? <a href="Login.html">Login</a> </i>
+    </form>
+    <button></button>
+    <button></button>
+  </div>
+</body>
+</html>

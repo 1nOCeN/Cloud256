@@ -113,7 +113,7 @@ body {
       width: 900px;
       height: 500px;
       align-items: center;
-      background: black;
+      background: rgba(255, 255, 255, 0.1);
       margin-top: 50px;
       padding: 20px;
       box-shadow: 0 0 20px 5px neongreen; /* Neon green glow */
@@ -174,13 +174,13 @@ body {
     }
     @keyframes glowPulse {
       0% {
-        box-shadow: 0 0 10px 2px #37ff14cf; /* Glow starts small */
+        box-shadow: 0 0 10px 2px rgb(0, 0, 188); /* Glow starts small */
       }
       50% {
         box-shadow: 0 0 20px 5px #ffffffcf; /* Glow grows brighter */
       }
       100% {
-        box-shadow: 0 0 6px 2px #37ff14cf; /* Glow fades back */
+        box-shadow: 0 0 6px 2px rgb(0, 0, 188); /* Glow fades back */
       }
     }
     .login-form img{
