@@ -96,70 +96,50 @@
       }
     }
 
-    /* Form Container */
-    .box {
+    .login-form {
       display: flex;
-      flex-direction: column;
+      width: 900px;
+      height: 500px;
       align-items: center;
       background: rgba(255, 255, 255, 0.1);
+      margin-top: 50px;
       padding: 20px;
+      box-shadow: 0 0 20px 5px neongreen; /* Neon green glow */
       border-radius: 10px;
-      box-shadow: 0 0 20px 5px #00ff00; /* Neon green glow */
-      animation: glowPulse 2s infinite;
     }
 
-    .box h1 {
-      margin-bottom: 20px;
+    .login-form form{
+      display: grid;
+      margin-left: 100px;
     }
 
-    .box form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .box form div {
-      margin-bottom: 15px;
-      width: 100%;
-    }
-
-    .box form label {
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    .box form input[type="text"],
-    .box form input[type="password"] {
-      width: 300px;
-      padding: 10px;
-      border-radius: 5px;
-      border: none;
+    .login-form input {
       background-color: #1c1c1e;
-      color: white;
+      width: 400px;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
       outline: none;
     }
 
-    .box form input[type="submit"] {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      background-color: #007bbf;
-      color: white;
+    .login-form input[type="text"],
+    .login-form input[type="password"] {
+      background-color: #1c1c1c;
+      color: #fff;
+    }
+
+    .login-form input[type="submit"] {
+      background-color: rgb(18, 18, 18);
+      color: #fff;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      width: 250px;
+      margin-left: 20%;
     }
 
-    .box form input[type="submit"]:hover {
-      background-color: #005f99;
-    }
-
-    .box p {
-      margin-top: 15px;
-    }
-
-    .box p a {
-      color: #00ff00;
-      text-decoration: none;
+    .login-form input[type="submit"]:hover {
+      background-color: #007bbf;
     }
 
     /* Video Background */
@@ -193,4 +173,13 @@
       100% {
         box-shadow: 0 0 6px 2px rgb(0, 0, 188); /* Glow fades back */
       }
+    }
+    .login-form img{
+      animation: glowPulse 2s infinite;
+    }
+    .login-form i{
+      margin-left: 20%;
+    }
+    .login-form a{
+      margin-left: 10%;
     }

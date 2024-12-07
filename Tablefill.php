@@ -1,7 +1,8 @@
 <?php
-
+                   //host       name     password   data base name
 $conn = new mysqli('localhost', 'inocen' , 'rootme1', 'inocen');
 
+// conn check.
 if (!$conn) {
     echo("Connection failed: " . mysqli_connect_error() );
 }
