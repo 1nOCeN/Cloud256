@@ -124,7 +124,8 @@
     }
 
     .login-form input[type="text"],
-    .login-form input[type="password"] {
+    .login-form input[type="password"],
+    .login-form input[type="email"]{
       background-color: #1c1c1c;
       color: #fff;
     }
