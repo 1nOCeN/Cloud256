@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     }
 
     //Back for signup
-    header("Location: Login.html");
+    header("Location: Mainprogram.html");
 
     // Close the Conn
     $conn->close();
