@@ -1,45 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Text Animation to Login Form</title>
-  <link rel="stylesheet" href="Login.css">
-  <script src="Mainjs.js"> </script>
-  <style>
-    
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Files</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container2 {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .upload-container {
+            margin-bottom: 20px;
+        }
+
+        .file-list {
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        .file-item {
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #f9f9f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .file-item button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .file-item button:hover {
+            background-color: #c82333;
+        }
+
+        .file-item a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .file-item a:hover {
+            text-decoration: underline;
+        }
+
+        .warning {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-
-    
-  <!-- Text Animation -->
-  <div class="animated-text" id="animated-text">
-    Welcome to Our Secure System!
-  </div>
-  
-  <div class="navbar">
-        
-    <div class="logo">
-        <a href="Main.html"><img src="SafeCloud_Logo.jpg" alt="Logo"></a>
-    </div>
-
-    <div class="dots">
-        <button onclick="toggleBox()">&#8942;</button>
-        <div class="box2" id="box2">
-            <a href="#">Support &#8599;</a>
+    <div class="container2">
+        <h1>My Files</h1>
+        <div class="upload-container">
+            <input type="file" id="fileInput" multiple />
+            <button onclick="saveFiles()">Save Files</button>
+            <div id="warningMessage" class="warning"></div>
         </div>
+        <div class="file-list" id="fileList"></div>
     </div>
-</div>
 
-  <!-- Login Form -->
-  <div class="login-form" id="login-form">
-    <h2>Login</h2>
-    <form>
-      <input type="text" placeholder="Username" required>
-      <input type="password" placeholder="Password" required>
-      <input type="submit" value="Login">
-    </form>
-  </div>
+    <script>
+        // Store uploaded files in localStorage
+        function saveFiles() {
+            const fileInput = document.getElementById("fileInput");
+            const files = fileInput.files;
+            const savedFiles = JSON.parse(localStorage.getItem("myFiles")) || [];
+            const warningMessage = document.getElementById("warningMessage");
+
+            // Clear previous warning
+            warningMessage.innerHTML = "";
+
+            if (files.length === 0) {
+                alert("No files selected!");
+                return;
+            }
+
+            let fileTooLarge = false;
+
+            // Check if any file exceeds 5MB
+            for (const file of files) {
+                if (file.size > 5 * 1024 * 1024) { // 5MB in bytes
+                    fileTooLarge = true;
+                    break;
+                }
+            }
+
+            if (fileTooLarge) {
+                warningMessage.innerHTML = "Warning: One or more files exceed the 5MB size limit and will not be uploaded.";
+                return;
+            }
+
+            // Upload files if none are too large
+            for (const file of files) {
+                const reader = new FileReader();
+
+                reader.onload = function (event) {
+                    const fileData = {
+                        name: file.name,
+                        size: file.size,
+                        type: file.type,
+                        content: event.target.result,
+                    };
+
+                    savedFiles.push(fileData);
+                    localStorage.setItem("myFiles", JSON.stringify(savedFiles)); // Save files in localStorage
+                    displayFiles();
+                };
+
+                reader.readAsDataURL(file); // Convert file to Base64 format
+            }
+        }
+
+        // Display the saved files
+        function displayFiles() {
+            const fileList = document.getElementById("fileList");
+            const savedFiles = JSON.parse(localStorage.getItem("myFiles")) || [];
+
+            fileList.innerHTML = ""; // Clear current file list
+
+            savedFiles.forEach((file, index) => {
+                const fileItem = document.createElement("div");
+                fileItem.className = "file-item";
+                fileItem.innerHTML = `
+                    <div>
+                        <strong>${file.name}</strong> (${(file.size / 1024).toFixed(2)} KB)
+                        <br>
+                        <a href="${file.content}" download="${file.name}">Download</a>
+                    </div>
+                    <button onclick="deleteFile(${index})">Delete</button>
+                `;
+                fileList.appendChild(fileItem);
+            });
+        }
+
+        // Delete a file from localStorage
+        function deleteFile(index) {
+            const savedFiles = JSON.parse(localStorage.getItem("myFiles")) || [];
+            savedFiles.splice(index, 1); // Remove the file at the given index
+            localStorage.setItem("myFiles", JSON.stringify(savedFiles)); // Save updated files in localStorage
+            displayFiles(); // Refresh the file list
+        }
+
+        // Display files on page load
+        document.addEventListener("DOMContentLoaded", displayFiles);
+    </script>
 </body>
 </html>
