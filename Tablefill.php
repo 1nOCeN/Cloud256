@@ -1,37 +1,37 @@
 <?php
-                   //host       name     password   data base name
-$conn = new mysqli('localhost', 'inocen' , 'rootme1', 'inocen');
+// Database connection: host, username, password, database name
+$conn = new mysqli('localhost', 'cloud', 'rootme1', 'cloud');
 
-// conn check.
-if (!$conn) {
-    echo("Connection failed: " . mysqli_connect_error() );
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
+// Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
-    // Collect DATA.
+    // Collect form data
     $email = htmlspecialchars($_POST['Email']);
     $username = htmlspecialchars($_POST['Username']);
     $password = htmlspecialchars($_POST['Password']);
 
-    // Hashing
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    // Hash the password for security
+    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-    //crate the sql table.
-    $add = "INSERT INTO users(username, email, password) VALUES ( '$username', '$email', '$hashedPassword')";
+    // Create SQL query (use correct variable for username)
+    $add = "INSERT INTO users (email, password, username) VALUES ('$email', '$hashedPassword', '$username')";
 
-    // check
-    if (mysqli_query($conn, $add)){
-        echo "<p>Registration successful! Your data has been saved.</p>";
+    // Execute query and check if it was successful
+    if ($conn->query($add) === TRUE) {
+        // Redirect back to main program
+        header("Location: Mainprogram.html");
+        exit(); // Stop script execution after redirect
     } else {
-        echo "Erorr!" . mysqli_error($conn);
+        // Output error if query fails
+        echo "Error: " . $conn->error;
     }
 
-    //Back for signup
-    header("Location: Mainprogram.html");
-
-    // Close the Conn
+    // Close the database connection
     $conn->close();
-    exit();
 }
 ?>

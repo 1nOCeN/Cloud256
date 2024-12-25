@@ -118,6 +118,7 @@ body {
       padding: 20px;
       box-shadow: 0 0 20px 5px neongreen; /* Neon green glow */
       border-radius: 10px;
+      color: white;
     }
 
     .login-form form{
@@ -133,6 +134,7 @@ body {
       border: none;
       border-radius: 5px;
       outline: none;
+      color: white;
     }
 
     .login-form input[type="text"],
