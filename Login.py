@@ -1,50 +1,64 @@
-from flask import Flask, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash
+from flask import Flask, request, render_template, redirect, url_for
+from bcrypt import hashpw, gensalt
+import mysql.connector
+from mysql.connector import Error
 
 app = Flask(__name__)
 
-# Configure the SQLite database
-db = {
-    'host': 'localhost',
-    'user': 'inocen',
-    'password': 'rootme1',
-    'database': 'inocen'
-}
+# Database connection
+def db():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="rootme1",
+        database="inocen"
+    )
 
-@app.route('/')
+@app.route("/")
+def index():
+    return render("signup.html")
 
+@app.route("/signup", methods=["GET", "POST"])
 def signup():
-    return render_template('signup.html')
+    if request.method == "POST":
+        username = request.form.get("Username")
+        email = request.form.get("Email")
+        password = request.form.get("Password")
 
-# Route to handle form submission and save to database
-@app.route('/save_Sign up.html', methods=['POST'])
+        # Validate inputs
+        if not username or not email or not password:
+            return "<h3>Error: All fields are required!</h3>"
 
-def save_signup():
-    username = request.form['username']
-    password = request.form['password']
-    email = request.form['email']
+        # Hash the password
+        hashed_password = hashpw(password.encode('utf-8'), gensalt()).decode('utf-8')
 
+        # Save to database
+        try:
+            connection = db()
+            cursor = connection.cursor()
 
-    # Hash the password for security
-    hashed_password = generate_password_hash(password, method='sha256')
+            query = "INSERT INTO users (username, email, password_hash) VALUES (%s, %s, %s)"
+            cursor.execute(query, (username, email, hashed_password))
+            connection.commit()
 
-    class User(db.Model):
-        id = db.Column(db.Integer, primary_key=True)
-        email = db.Column(db.String(120), unique=True, nullable=False)
-        username = db.Column(db.String(80), unique=True, nullable=False)
-        password = db.Column(db.String(200), nullable=False)
+        except mysql.connector.IntegrityError as e:
+            if "username" in str(e):
+                error_message = "Username already exists. Please choose another."
+            elif "email" in str(e):
+                error_message = "Email already exists. Please use another."
+            else:
+                error_message = "An unknown error occurred."
+            return f"<h3>Error: {error_message}</h3>"
 
-    # Save to the database
-    new_user = User(email=email, username=username, password=hashed_password)
+        except Error as e:
+            return f"<h3>Error: Could not save user. {str(e)}</h3>"
 
-    try:
-        db.session.add(new_user)
-        db.session.commit()
-        return "User registered successfully!"
-    except:
-        db.session.rollback()
-        return "Username already exists or an error occurred."
+        finally:
+            if 'connection' in locals() and connection.is_connected():
+                cursor.close()
+                connection.close()
 
-if __name__ == '__main__':
-    app.run(debug=True)
+    return render("signup.html")
+
+if __name__ == "__main__":
+    app.run(host='127.0.0.1',port=5500,debug=True)
